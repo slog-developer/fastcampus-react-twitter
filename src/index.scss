@@ -1,4 +1,5 @@
 $background: #1e293b;
+$backgroundLight: #263340;
 $activeBg: #3c495f5f;
 $white: #fff;
 $border: #708090;
@@ -73,7 +74,7 @@ body {
 
   &__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     background-color: transparent;
 
     button {
@@ -92,6 +93,28 @@ body {
 
 // home 레이아웃
 .home {
+  &__search-div {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__search {
+    @extend .post-form__input;
+    background-color: $backgroundLight;
+    border-radius: 20px;
+    margin: 0 16px;
+    margin-bottom: 20px;
+    padding: 12px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 600;
+
+    &:focus {
+      border: 1px solid $primaryColor;
+      background-color: $activeBg;
+    }
+  }
+
   &__top {
     @extend .transparent;
     @extend .sticky;
@@ -131,6 +154,44 @@ body {
 }
 
 .post-form {
+  &__input {
+    font-family: $font;
+    padding: 8px;
+    border: none;
+    outline: none;
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__hashtags {
+    padding: 16px;
+    border-bottom: 1px solid $border;
+
+    &-outputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 1px;
+      align-items: center;
+    }
+
+    &-tag {
+      font-size: 14px;
+      border: 1px solid $primaryColor;
+      color: $primaryColor;
+      border-radius: 10px;
+      padding: 2px 8px;
+      margin-right: 6px;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: $activeBorder;
+        border: 1px solid $activeBorder;
+      }
+    }
+  }
+
   &__textarea {
     font-family: $font;
     min-height: 120px;
