@@ -40,7 +40,7 @@ export default function PostBox({ post }: PostBoxProps) {
               <FaUserCircle className="post__box-profile-icon" />
             )}
             <div className="post__email">{post?.email}</div>
-            <div className="post__createAt">{post?.createAt}</div>
+            <div className="post__createdAt">{post?.createdAt}</div>
           </div>
           <div className="post__box-content">{post?.content}</div>
           <div className="post-form__hashtags-outputs">

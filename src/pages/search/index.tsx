@@ -1,15 +1,15 @@
+import { useEffect, useState, useContext } from "react";
 import PostBox from "components/posts/PostBox";
+import { PostProps } from "pages/home";
 import AuthContext from "context/AuthContext";
 import {
   collection,
-  where,
   query,
+  where,
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
 import { db } from "firebaseApp";
-import { PostProps } from "pages/home";
-import { useContext, useEffect, useState } from "react";
 
 export default function SearchPage() {
   const [posts, setPosts] = useState<PostProps[]>([]);
@@ -22,14 +22,14 @@ export default function SearchPage() {
 
   useEffect(() => {
     if (user) {
-      let postRef = collection(db, "posts");
-      let postQuery = query(
-        postRef,
+      let postsRef = collection(db, "posts");
+      let postsQuery = query(
+        postsRef,
         where("hashTags", "array-contains-any", [tagQuery]),
         orderBy("createdAt", "desc")
       );
 
-      onSnapshot(postQuery, (snapShot) => {
+      onSnapshot(postsQuery, (snapShot) => {
         let dataObj = snapShot?.docs?.map((doc) => ({
           ...doc?.data(),
           id: doc?.id,
@@ -48,7 +48,6 @@ export default function SearchPage() {
         </div>
         <div className="home__search-div">
           <input
-            type="text"
             className="home__search"
             placeholder="해시태그 검색"
             onChange={onChange}
@@ -57,10 +56,10 @@ export default function SearchPage() {
       </div>
       <div className="post">
         {posts?.length > 0 ? (
-          posts?.map((post: PostProps) => <PostBox post={post} key={post.id} />)
+          posts?.map((post) => <PostBox post={post} key={post.id} />)
         ) : (
           <div className="post__no-posts">
-            <div className="posts__text">게시글이 없습니다.</div>
+            <div className="post__text">게시글이 없습니다.</div>
           </div>
         )}
       </div>
