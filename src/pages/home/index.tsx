@@ -2,13 +2,7 @@ import PostForm from "components/posts/PostForm";
 import PostBox from "components/posts/PostBox";
 import { useContext, useEffect, useState } from "react";
 
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  orderBy,
-} from "firebase/firestore";
+import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
 import AuthContext from "context/AuthContext";
 import { db } from "firebaseApp";
 
@@ -22,6 +16,7 @@ export interface PostProps {
   likes?: string[];
   likeCount?: number;
   comments?: any;
+  hashTags?: string[];
 }
 
 export default function HomePage() {
@@ -59,7 +54,7 @@ export default function HomePage() {
           posts?.map((post) => <PostBox post={post} key={post.id} />)
         ) : (
           <div className="post__no-posts">
-            <div className="posts__text">뭐라고 말좀해</div>
+            <div className="posts__text">게시글이 없습니다.</div>
           </div>
         )}
       </div>

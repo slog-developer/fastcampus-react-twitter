@@ -6,7 +6,7 @@ import PostEdit from "pages/posts/edit";
 import PostNew from "pages/posts/new";
 import ProfilePage from "pages/profile";
 import ProfileEdit from "pages/profile/edit";
-import Search from "pages/search";
+import SearchPage from "pages/search";
 import LoginPage from "pages/users/login";
 import SignupPage from "pages/users/signup";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -28,7 +28,7 @@ export default function Router({ isAuthenticated }: RouterProps) {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/notifications" element={<Notifications />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="*" element={<Navigate replace to={"/"} />} />
         </>
       ) : (
