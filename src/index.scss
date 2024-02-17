@@ -7,7 +7,7 @@ $primaryColor: #60a5fa;
 $activeBorder: #3b82f6;
 $grayText: #9ca3af;
 $danger: #dc2626;
-$dnagerDark: #9a1818;
+$dangerDark: #9a1818;
 $gray: #6b7280;
 $grayDark: #4c515b;
 
@@ -155,6 +155,30 @@ body {
 }
 
 .post-form {
+  &__image-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__attachment {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    margin-right: auto;
+  }
+
+  &__clear-btn {
+    @extend .button;
+    padding: 0.2rem 0.8rem;
+    background-color: $danger;
+
+    &:hover,
+    &:focus {
+      background-color: $dangerDark;
+    }
+  }
+
   &__input {
     font-family: $font;
     padding: 8px;
@@ -218,6 +242,7 @@ body {
     padding: 0.75rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
+    align-items: center;
 
     .post-form__file {
       display: flex;
@@ -245,6 +270,10 @@ body {
 
 // post layout
 .post {
+  &__image-div {
+    padding: 16px;
+  }
+
   &__header {
     button {
       border: none;
@@ -323,7 +352,7 @@ body {
 
           &:hover,
           &:focus {
-            background-color: $dnagerDark;
+            background-color: $dangerDark;
           }
         }
 
