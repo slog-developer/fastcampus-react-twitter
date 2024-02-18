@@ -7,7 +7,7 @@ $primaryColor: #60a5fa;
 $activeBorder: #3b82f6;
 $grayText: #9ca3af;
 $danger: #dc2626;
-$dnagerDark: #9a1818;
+$dangerDark: #9a1818;
 $gray: #6b7280;
 $grayDark: #4c515b;
 
@@ -24,6 +24,7 @@ body {
 * {
   background-color: $background;
   color: $white;
+  box-sizing: border-box;
 }
 
 .layout {
@@ -154,6 +155,47 @@ body {
 }
 
 .post-form {
+  &__profile {
+    padding: 16px;
+
+    .post-form__input {
+      border-bottom: 1px solid $gray;
+      padding: 8px 2px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 20px;
+
+      &:active,
+      &:focus {
+        border-bottom: 1px solid white;
+      }
+    }
+  }
+
+  &__image-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__attachment {
+    display: flex;
+    align-items: end;
+    gap: 16px;
+    margin-right: auto;
+  }
+
+  &__clear-btn {
+    @extend .button;
+    padding: 0.2rem 0.8rem;
+    background-color: $danger;
+
+    &:hover,
+    &:focus {
+      background-color: $dangerDark;
+    }
+  }
+
   &__input {
     font-family: $font;
     padding: 8px;
@@ -217,6 +259,7 @@ body {
     padding: 0.75rem 1rem;
     justify-content: space-between;
     border-bottom: 1px solid $border;
+    align-items: center;
 
     .post-form__file {
       display: flex;
@@ -244,6 +287,14 @@ body {
 
 // post layout
 .post {
+  &__image-div {
+    padding: 16px;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
   &__header {
     button {
       border: none;
@@ -258,7 +309,7 @@ body {
   &__no-posts {
     padding: 16px;
 
-    .posts__text {
+    .post__text {
       font-size: 14px;
       border: 1px solid $gray;
       padding: 16px;
@@ -274,7 +325,7 @@ body {
   }
 
   &__email,
-  &__createAt {
+  &__createdAt {
     font-size: 12px;
     color: $grayText;
   }
@@ -322,7 +373,7 @@ body {
 
           &:hover,
           &:focus {
-            background-color: $dnagerDark;
+            background-color: $dangerDark;
           }
         }
 
@@ -447,5 +498,49 @@ body {
       background-color: $activeBg;
       color: $white;
     }
+  }
+}
+
+// 프로필 레이아웃
+.profile {
+  display: flex;
+  padding: 0 1rem;
+  margin-top: 2.5rem;
+  justify-content: space-between;
+  align-items: center;
+
+  &__image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  &__btn {
+    @extend .button;
+    background-color: $primaryColor;
+
+    &:hover,
+    &:focus {
+      background-color: $activeBorder;
+    }
+  }
+
+  &__text {
+    padding: 0 1rem;
+    margin-top: 20px;
+  }
+
+  &__name {
+    font-size: 16px;
+    color: $white;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  &__email {
+    font-size: 14px;
+    color: $grayText;
+    margin-bottom: 4px;
   }
 }
