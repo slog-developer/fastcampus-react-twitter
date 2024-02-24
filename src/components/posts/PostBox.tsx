@@ -16,6 +16,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getStorage, ref, deleteObject } from "firebase/storage";
 
 import { toast } from "react-toastify";
+import FollowingBox from "components/following/FollowingBox";
 
 interface PostBoxProps {
   post: PostProps;
@@ -75,8 +76,13 @@ export default function PostBox({ post }: PostBoxProps) {
             ) : (
               <FaUserCircle className="post__box-profile-icon" />
             )}
-            <div className="post__email">{post?.email}</div>
-            <div className="post__createdAt">{post?.createdAt}</div>
+            <div className="post__flex--between">
+              <div className="post__flex">
+                <div className="post__email">{post?.email}</div>
+                <div className="post__createdAt">{post?.createdAt}</div>
+              </div>
+              <FollowingBox post={post} />
+            </div>
           </div>
           <div className="post__box-content">{post?.content}</div>
           {post?.imageUrl && (
