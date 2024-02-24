@@ -1,8 +1,9 @@
-import AuthContext from "context/AuthContext";
+import { useContext, useState } from "react";
+import { PostProps } from "pages/home";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { db } from "firebaseApp";
-import { PostProps } from "pages/home";
-import { useContext, useState } from "react";
+import AuthContext from "context/AuthContext";
+
 import { toast } from "react-toastify";
 
 export interface CommentFormProps {
@@ -12,6 +13,7 @@ export interface CommentFormProps {
 export default function CommentForm({ post }: CommentFormProps) {
   const [comment, setComment] = useState<string>("");
   const { user } = useContext(AuthContext);
+
   const onSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -37,8 +39,8 @@ export default function CommentForm({ post }: CommentFormProps) {
       setComment("");
 
       try {
-      } catch (error) {
-        console.log(error);
+      } catch (e: any) {
+        console.log(e);
       }
     }
   };
@@ -56,11 +58,11 @@ export default function CommentForm({ post }: CommentFormProps) {
   return (
     <form className="post-form" onSubmit={onSubmit}>
       <textarea
+        className="post-form__textarea"
         name="comment"
         id="comment"
-        className="post-form__textarea"
-        placeholder="what is happening"
         required
+        placeholder="What is happening?"
         onChange={onChange}
         value={comment}
       />

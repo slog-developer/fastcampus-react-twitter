@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { collection, addDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { FiImage } from "react-icons/fi";
 import { db, storage } from "firebaseApp";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
 
 import { toast } from "react-toastify";
 import AuthContext from "context/AuthContext";
@@ -15,6 +15,7 @@ export default function PostForm() {
   const [imageFile, setImageFile] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const { user } = useContext(AuthContext);
+
   const handleFileUpload = (e: any) => {
     const {
       target: { files },
@@ -30,10 +31,6 @@ export default function PostForm() {
     };
   };
 
-  const handleDeleteImage = () => {
-    setImageFile(null);
-  };
-
   const onSubmit = async (e: any) => {
     setIsSubmitting(true);
     const key = `${user?.uid}/${uuidv4()}`;
@@ -41,11 +38,14 @@ export default function PostForm() {
     e.preventDefault();
 
     try {
+      // 이미지 먼저 업로드
       let imageUrl = "";
       if (imageFile) {
         const data = await uploadString(storageRef, imageFile, "data_url");
         imageUrl = await getDownloadURL(data?.ref);
       }
+
+      // 업로드된 이미지의 download url 업데이트
       await addDoc(collection(db, "posts"), {
         content: content,
         createdAt: new Date()?.toLocaleDateString("ko", {
@@ -79,14 +79,18 @@ export default function PostForm() {
     }
   };
 
+  const removeTag = (tag: string) => {
+    setTags(tags?.filter((val) => val !== tag));
+  };
+
   const onChangeHashTag = (e: any) => {
-    setHashTag(e?.target.value?.trim());
+    setHashTag(e?.target?.value?.trim());
   };
 
   const handleKeyUp = (e: any) => {
     if (e.keyCode === 32 && e.target.value.trim() !== "") {
-      // 만약 같은 태그가 있다면 에러를 띄운다.
-      // 태그를 생성해준다.
+      // 만약 같은 태그가 있다면 에러를 띄운다
+      // 아니라면 태그를 생성해준다
       if (tags?.includes(e.target.value?.trim())) {
         toast.error("같은 태그가 있습니다.");
       } else {
@@ -96,8 +100,8 @@ export default function PostForm() {
     }
   };
 
-  const removeTag = (tag: string) => {
-    setTags(tags?.filter((val) => val !== tag));
+  const handleDeleteImage = () => {
+    setImageFile(null);
   };
 
   return (
@@ -124,7 +128,6 @@ export default function PostForm() {
           ))}
         </span>
         <input
-          type="text"
           className="post-form__input"
           name="hashtag"
           id="hashtag"

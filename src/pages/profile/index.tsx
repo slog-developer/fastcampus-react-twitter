@@ -12,7 +12,7 @@ import { PostProps } from "pages/home";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PROFILE_DEFAULT_URL = "/logo192.png";
+const PROFILE_DEFAULT_URL = "/logo512.png";
 type TabType = "my" | "like";
 
 export default function ProfilePage() {

@@ -1,18 +1,19 @@
+import { useEffect, useState, useContext } from "react";
 import PostHeader from "components/posts/PostHeader";
-import AuthContext from "context/AuthContext";
-import { updateProfile } from "firebase/auth";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadString,
-} from "firebase/storage";
-import { storage } from "firebaseApp";
-import { useContext, useEffect, useState } from "react";
 import { FiImage } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import AuthContext from "context/AuthContext";
+import {
+  ref,
+  deleteObject,
+  uploadString,
+  getDownloadURL,
+} from "firebase/storage";
+import { updateProfile } from "firebase/auth";
+
 import { v4 as uuidv4 } from "uuid";
+import { storage } from "firebaseApp";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const STORAGE_DOWNLOAD_URL_STR = "https://firebasestorage.googleapis.com";
 
@@ -39,11 +40,16 @@ export default function ProfileEdit() {
 
     try {
       // 기존 유저 이미지가 Firebase Storage 이미지일 경우에만 삭제
-      if (user?.photoURL && user?.photoURL.includes(STORAGE_DOWNLOAD_URL_STR)) {
+      if (
+        user?.photoURL &&
+        user?.photoURL?.includes(STORAGE_DOWNLOAD_URL_STR)
+      ) {
         const imageRef = ref(storage, user?.photoURL);
-        await deleteObject(imageRef).catch((error) => {
-          console.log(error);
-        });
+        if (imageRef) {
+          await deleteObject(imageRef).catch((error) => {
+            console.log(error);
+          });
+        }
       }
       // 이미지 업로드
       if (imageUrl) {
@@ -91,7 +97,6 @@ export default function ProfileEdit() {
     if (user?.photoURL) {
       setImageUrl(user?.photoURL);
     }
-
     if (user?.displayName) {
       setDisplayName(user?.displayName);
     }
@@ -122,25 +127,26 @@ export default function ProfileEdit() {
               </button>
             </div>
           )}
+
           <div className="post-form__submit-area">
             <div className="post-form__image-area">
-              <label htmlFor="file-input" className="post-form__file">
+              <label className="post-form__file" htmlFor="file-input">
                 <FiImage className="post-form__file-icon" />
               </label>
-              <input
-                type="file"
-                name="file-input"
-                id="file-input"
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileUpload}
-              />
-              <input
-                type="submit"
-                value="프로필 수정"
-                className="post-form__submit-btn"
-              />
             </div>
+            <input
+              type="file"
+              name="file-input"
+              id="file-input"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+            <input
+              type="submit"
+              value="프로필 수정"
+              className="post-form__submit-btn"
+            />
           </div>
         </div>
       </form>
