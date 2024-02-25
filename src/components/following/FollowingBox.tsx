@@ -10,13 +10,14 @@ import {
 import { db } from "firebaseApp";
 import { PostProps } from "pages/home";
 import { useCallback, useContext, useEffect, useState } from "react";
+
 import { toast } from "react-toastify";
 
 interface FollowingProps {
   post: PostProps;
 }
 
-interface UserPorps {
+interface UserProps {
   id: string;
 }
 
@@ -31,6 +32,7 @@ export default function FollowingBox({ post }: FollowingProps) {
       if (user?.uid) {
         // 내가 주체가 되어 '팔로잉' 컬렉션 생성 or 업데이트
         const followingRef = doc(db, "following", user?.uid);
+
         await setDoc(
           followingRef,
           {
@@ -41,13 +43,15 @@ export default function FollowingBox({ post }: FollowingProps) {
 
         // 팔로우 당하는 사람이 주체가 되어 '팔로우' 컬렉션 생성 or 업데이트
         const followerRef = doc(db, "follower", post?.uid);
+
         await setDoc(
           followerRef,
           { users: arrayUnion({ id: user?.uid }) },
           { merge: true }
         );
+
+        toast.success("팔로우를 했습니다.");
       }
-      toast.success("팔로우를 했습니다.");
     } catch (e) {
       console.log(e);
     }
@@ -55,23 +59,22 @@ export default function FollowingBox({ post }: FollowingProps) {
 
   const onClickDeleteFollow = async (e: any) => {
     e.preventDefault();
-
     try {
       if (user?.uid) {
-        const followingRef = doc(db, "follower", post?.uid);
+        const followingRef = doc(db, "following", user?.uid);
         await updateDoc(followingRef, {
-          users: arrayRemove({ id: user?.uid }),
+          users: arrayRemove({ id: post?.uid }),
         });
 
         const followerRef = doc(db, "follower", post?.uid);
         await updateDoc(followerRef, {
-          users: arrayRemove({ id: user?.uid }),
+          users: arrayRemove({ id: user.uid }),
         });
-      }
 
-      toast.success("팔로우를 취소 했습니다.");
-    } catch (error) {
-      console.log(error);
+        toast.success("팔로우를 취소했습니다.");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -82,8 +85,8 @@ export default function FollowingBox({ post }: FollowingProps) {
         setPostFollowers([]);
         doc
           ?.data()
-          ?.users?.map((user: UserPorps) =>
-            setPostFollowers((prev: UserPorps[]) =>
+          ?.users?.map((user: UserProps) =>
+            setPostFollowers((prev: UserProps[]) =>
               prev ? [...prev, user?.id] : []
             )
           );
@@ -101,7 +104,7 @@ export default function FollowingBox({ post }: FollowingProps) {
         (postFollowers?.includes(user?.uid) ? (
           <button
             type="button"
-            className="post__follow-btn"
+            className="post__following-btn"
             onClick={onClickDeleteFollow}
           >
             Following
